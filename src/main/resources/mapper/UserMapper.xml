@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboot1.dao.UserDao" >
+    <select id="getList" parameterType="java.util.Map" resultType="java.util.Map">
+        select name,createdtime from ot_user where code=#{code}
+
+    </select>
+    <update id="updateUser" parameterType="java.util.Map">
+        update ot_user set name = #{name} where code=#{code}
+
+    </update>
+    <select id="findUserById" parameterType="java.lang.String" resultType="com.example.springboot1.User">
+        select name from ot_user where code=#{code}
+    </select>
+    <select id="queryAll"  resultType="com.example.springboot1.User">
+        select name,code from ot_user
+    </select>
+
+
+
+</mapper>

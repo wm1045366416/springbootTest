@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+    <script src="../js/vue.js"></script>
+    <style>
+        .class1{
+            background: #222;
+            color: #eee;
+        }
+        table {
+            border: 1px solid black;
+        }
+        table {
+            width: 100%;
+        }
+
+        th {
+            height: 50px;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>{{ message }}</p>
+        <h1>name:{{name}}</h1>
+        <h1>{{details()}}</h1>
+        <div v-html="html"></div>
+        <p v-if="vif=='true'">指令测试-v-if,可见</p>
+        <p v-else-if="vif=='false'"> else if</p>
+        <p v-else>else项目隐藏</p>
+        <input type="text" v-model="vif">
+    </div>
+    <div id="app1">
+        <label for="r1">修改颜色</label><input type="checkbox" v-model="use" id="r1">
+        <br><br>
+        <div v-bind:class="{'class1': use}">
+            v-bind:class 指令
+        </div>
+
+        {{5+5}}<br>
+        {{ ok ? 'YES' : 'NO' }}<br>
+        {{ message.split('').reverse().join('') }}
+        <div v-bind:id="'list-' + id">菜鸟教程</div>
+
+    </div>
+    <div id="app2">
+        数据双向绑定:<p>{{message}}</p>
+        <input type="text" v-model="message">
+        过滤器:{{filter|capitalize}}
+    </div>
+    <!--循环测试-->
+    <div id="app3">
+        <table>
+            <thead>
+                <th>NO</th>
+                <th>姓名</th>
+                <th>年龄</th>
+            </thead>
+            <tbody v-for="(i,index) in list">
+                <tr>
+                    <td>{{index+1}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.age}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    <!--监听测试-->
+    <div id="app4">
+        <p style="font-size:25px;">计数器:{{count}}</p>
+        <button @click="count++" style="font-size: 25px;">添加</button>
+        <button @click="count--" style="font-size: 25px;">减少</button>
+    </div>
+    <!--购物车案例-->
+    <div id="app5">
+        <table>
+            <thead>
+                <th>序号</th>
+                <th>名称</th>
+                <th>价格</th>
+                <th>数量</th>
+                <th>合计</th>
+                <th>操作</th>
+            </thead>
+            <tbody >
+                <tr v-for="(i,index) in phoneList">
+                    <td>{{index+1}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.price}}</td>
+                    <td>
+                        <button @click="i.count++">+</button>
+                        {{i.count}}
+                        <button @click="i.count--">-</button>
+                    </td>
+                    <td>{{i.count*i.price}}</td>
+                    <td>
+                        <button @click="remove(index,i)">移除</button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <p>总价:{{totals()}}</p>
+    </div>
+<script>
+    /*new Vue({
+        el: '#app',
+        data: {
+            message:'Hello vue.js!'
+        }
+    })*/
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            message:'嘻嘻',
+            name:'张三',
+            age:18,
+            html:'<a href="https://www.baidu.com" target="_blank">百度</a>',
+            vif:'true'
+        },
+        methods:{
+            details:function(){
+                return this.message+"--方法";
+            }
+        }
+
+    })
+    vm.name='222'
+    var vm1 = new Vue({
+        el:'#app1',
+        data:{
+            use:false,
+            ok:true,
+            message:'RUNOOB',
+            id:2,
+
+
+        }
+    })
+    vm1.ok=false;
+    //双向数据绑定, 过滤器
+    var vm2 = new Vue({
+        el:'#app2',
+        data:{
+            message:"数据双向绑定!",
+            filter:'abcd'
+        },
+        filters:{
+            capitalize:function(value){
+                if(!value){
+                    return '';
+                }else{
+                    value=value.toString();
+                    return value.charAt(0).toUpperCase()+value.slice(1);
+                }
+            }
+        }
+    })
+    var vm3 = new Vue({
+        el:'#app3',
+        data:{
+            list:[
+                {name:"zhansan",age:18},
+                {name:"lisi",age:22},
+                {name:"wangwu",age:30}
+            ]
+        }
+    })
+    var vm4 = new Vue({
+        el:"#app4",
+        data:{
+            count:0
+        }
+    })
+    //监听
+    vm4.$watch ('count', function (nval, oval) {
+        //console.log(oval);
+        alert('计数器值的变化:'+oval+"变为:"+nval);
+    })
+    //购物车案例
+    var vm5 = new Vue({
+        el:"#app5",
+        data:{
+            phoneList:[
+                {name:"iphone8",price:"5200",count:"2"},
+                {name:"iphone8s",price:"5800",count:"1"},
+                {name:"iphoneX",price:"6800",count:"1"}
+            ]
+        },
+        methods:{
+            totals:function(){
+                var total=0;
+                for(var i=0;i<this.phoneList.length;i++){
+                    total+=this.phoneList[i].price*this.phoneList[i].count;
+                }
+                return total;
+            },
+            remove:function(index,i){
+                i.count=0;
+                var list = this.phoneList;
+                list.splice(index,1);
+            }
+        }
+
+    })
+</script>
+</body>
+</html>
