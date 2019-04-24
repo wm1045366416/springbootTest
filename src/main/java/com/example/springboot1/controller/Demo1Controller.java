@@ -16,6 +16,7 @@ public class Demo1Controller {
         Map map = new HashMap();
         map.put("name",name);
         map.put("ceshi","ceshi003");
+        map.put("ceshi002","测试001");
         map.put("age",16);
         map.put("age","ceshi001");
         return map;
