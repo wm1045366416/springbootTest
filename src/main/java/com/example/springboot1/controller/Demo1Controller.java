@@ -15,6 +15,7 @@ public class Demo1Controller {
     public Map gitHubTest(String name){
         Map map = new HashMap();
         map.put("name",name);
+        map.put("ceshi","ceshi002");
         map.put("age",16);
         map.put("age","ceshi001");
         return map;
