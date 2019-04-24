@@ -74,6 +74,7 @@ public class DemoController {
     @ResponseBody
     public String test005(String name){
         String str = name+":hello";
-        System.out.println("SUCCESS1111");        return str;
+        System.out.println("SUCCESS");
+        return str;
     }
 }
